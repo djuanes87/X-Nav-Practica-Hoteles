@@ -1,4 +1,63 @@
-#tabs-map{
-  width: auto;
-  height: auto;
+body{
+  margin: auto;
+}
+
+.elem-lista{
+  min-height: 50px;
+  float:none;
+}
+
+#tabs-map, #tabs-collections, #tabs-infohotel ,#tabs-asignations{
+  height: 600px;
+  margin: auto;
+
+}
+
+#tabs-collections, #tabs-infohotel ,#tabs-asignations{
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+img.mark, img.imgprof, img.delprof{
+  float:left;
+}
+
+div.prof{
+  height: 50px;
+}
+
+ul, li, ol{
+  list-style-type: none;
+}
+
+#people{
+  min-height: 200px;
+}
+
+#collection{
+  min-height: 500px;
+}
+
+.listas{
+  max-height: 600px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.close{
+  float:left;
+}
+
+#formcol{
+  padding-bottom: 5px;
+}
+
+div{
+  padding-bottom: 5px;
+}
+
+.carousel-inner > .item > img, .carousel-inner > .item > a > img {
+      width: auto;
+      height: 100%;
+      margin: auto;
 }
