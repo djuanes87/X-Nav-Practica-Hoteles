@@ -1,9 +1,27 @@
 //var apiKey = 'AIzaSyBMw42rEkhXtqkV7d5v2zYm6qveV85q82c';
 //var hotelactive;
 var apiKey = 'AIzaSyB-5jim643xF_iFUYXphMRaiGyHCmK6rRk';
+var mycollection;
+var myassignations = [];
 
+var save = false;
+var load = false;
+
+var accomodations;
 var github;
 var myrepo;
+
+var checkLoadAccomodation = function(t){
+  if(t == "savecol" ){
+    if(mycollection == undefined){
+      return false;
+    }
+  }
+  if(accomodations == undefined){
+    return false;
+  }
+  return true;
+};
 
 var checkUser = function(no, id){
   var p = get_accomodation(no).assignation;
@@ -18,6 +36,51 @@ var checkUser = function(no, id){
     }
   }
   return false;
+};
+
+var elementLista = function(no, name, src){
+  return '<li no=' + no + '><div class="elem-lista">' +
+  '<img class="mark" no="'+ no +'" src='+src+' onclick="show_mark('+no+')" />'+
+  '<div class="acm" no="'+ no+'" onclick="show_accomodation('+no+')" >' + name + '</div>'+
+  '</div></li>';
+};
+
+var loadStars = function(data){
+  var text = "";
+  try{
+    var subcat = data.extradata.categorias.categoria
+    .subcategorias.subcategoria.item[1]['#text'];
+    if(subcat != null || subcat != undefined){
+      text = text + ':  ';
+      for(i=0; i<parseInt(subcat);i++){
+        text = text + '<img src="images/estrella.gif" />';
+      }
+    }
+  }catch(err) {
+    text = "";
+  }
+  return text;
+}
+
+var loadDirection = function(data){
+  var text = '<p><strong> ADDRESS: </strong>';
+  text = text + data.address + ', '+data.subAdministrativeArea +
+  ', ' + data.zipcode + ', '+data.country + '</p>';
+  return text;
+};
+
+var accordionElement = function(name, hotels){
+  var content = "<h3 name='"+name+"'>"+name+"</h3><div><ul>";
+  var nhotels = hotels.length;
+  for(k=0; k<nhotels; k++){
+    var accomodation = get_accomodation(hotels[k]);
+    var hname = accomodation.basicData.name;
+    var hijo = parseInt(hotels[k]) + 1;
+    var src = $("#lista li:nth-child("+ hijo +") img").attr("src");
+    content = content + elementLista(hotels[k], hname, src);
+  }
+  content = content + "</ul></div>";
+  return content;
 };
 
 var delProfile = function(no, iduser){
@@ -43,6 +106,7 @@ var saveUser = function(resp, no){
   var assignation = accomodation.assignation;
   if(assignation == undefined){
     assignation = [{'id':resp.id, 'name':resp.displayName,'img':resp.image.url}];
+    myassignations.push(no);
   }else{
     var user = {'id':resp.id, 'name':resp.displayName,'img':resp.image.url};
     assignation.push(user);
@@ -52,6 +116,7 @@ var saveUser = function(resp, no){
   var content = '<div class="prof" id="'+ resp.id+'" ><h3>'+
   '<img class="delprof" src="images/close.png" onclick="delProfile('+no+', '+ resp.id+')" />'+
   '<img class="imgprof" src="'+resp.image.url+'" />'+resp.displayName+'</h3></div>';
+  console.log(myassignations);
   return content;
 }
 
@@ -64,7 +129,7 @@ var createContainer = function(){
       if(!contentAccomodation(ui.draggable)){
         var no = ui.draggable.attr('no');
         var text = '<li no='+no+' ><img class="close" src="images/close.png" onclick="delSelect('+no+')" />';
-        text = text + ui.draggable.html() + '</li>';
+        text = text + ui.draggable.html()+ '</li>';
         $("#collection ol").append(text);
       }
     }
@@ -93,7 +158,6 @@ function show_mark(no){
   var lat = accomodation.geoData.latitude;
   var lon = accomodation.geoData.longitude;
   var name = accomodation.basicData.name;
-  var url = accomodation.basicData.web;
   /*map.setView([lat, lon], 15); */
 
   var hijo = parseInt(no) + 1;
@@ -101,11 +165,12 @@ function show_mark(no){
   + "#accordion li img[no='"+no+"']";
   var img = $(sel).attr("src");
   if(img == "images/mrojo1.png"){
-      var textmark = '<a href="' + url + '">' + name + '</a><br/>';
+      var textmark = '<p onclick="show_accomodation('+no+')">' + name + '</p>';
       textmark = textmark + "<input type='button' class='popup' no='"+no+"' value='Unmark' onclick='show_mark("+no+")'/>";
       var mark = L.marker([lat, lon]);
 	    mark.bindPopup(textmark);
       mark.addTo(map);
+      map.setView([lat, lon], 15);
       mark.openPopup();
       accomodation.marker = mark;
       $(sel).attr("src", "images/mverde1.png");
@@ -114,6 +179,163 @@ function show_mark(no){
       map.removeLayer(mark);
       $(sel).attr("src", "images/mrojo1.png");
     }
+};
+
+//GITHUB
+var user;
+var reponame;
+var filename;
+
+var initForm = function(f){
+  console.log(f);
+  save = false;
+  load = false;
+  user = "";
+  reponame = "";
+  filename = "";
+  if(f == "col"){
+    $("#forminitcol").show();
+    $("#formtokencol").hide();
+    $("#formendcol").hide();
+  }else{
+    $("#forminitprofs").show();
+    $("#formtokenprofs").hide();
+    $("#formendprofs").hide();
+  }
+}
+
+var showForm = function(v, h){
+  var vis = "#"+v;
+  var hid = "#"+h;
+  $(vis).hide();
+  $(hid).show();
+}
+
+var getToken = function (v, h, f) {
+    var token;
+    if(f == "col"){
+      token = $("#tokencol").val();
+      $("#tokencol").val("");
+    }else{
+      token = $("#tokenprofs").val();
+      $("#tokenprofs").val("");
+    }
+    console.log (token);
+    if(token.length < 40){
+      return;
+    }
+    console.log (token);
+    github = new Github({
+        token: token,
+	      auth: "oauth"
+      });
+    showForm(v, h);
+};
+
+var getFileSave = function(s){
+  if(s == "col"){
+    return JSON.stringify(mycollection);
+  }else if(s == "profs"){
+    var asidata = {"asgt":[]};
+    var nelem = myassignations.length;
+    for(i=0; i<nelem; i++){
+      var accomodation = get_accomodation(myassignations[i]);
+      var elem = {"no":myassignations[i], "profiles":accomodation.assignation};
+      asidata.asgt.push(elem);
+    }
+    return JSON.stringify(asidata);
+  }else{
+    null;
+  }
+};
+
+var readData = function(s, file){
+  var objdata = JSON.parse(file);
+  if(s == "col"){
+    loadCollections(objdata);
+  }else if(s == "profs"){
+    loadProfiles(objdata);
+  }else{
+    null;
+  }
+}
+
+function getRepo(s) {
+  if(s == "col"){
+    user = $("#usercol").val();
+    reponame = $("#repocol").val();
+    filename = $("#filecol").val();
+    $("#usercol").val("");
+    $("#repocol").val("");
+    $("#filecol").val("");
+  }else{
+    user = $("#userprofs").val();
+    reponame = $("#repoprofs").val();
+    filename = $("#fileprofs").val();
+    $("#userprofs").val("");
+    $("#repoprofs").val("");
+    $("#fileprofs").val("");
+  }
+    myrepo = github.getRepo(user, reponame);
+    if(save){
+      var datafile = getFileSave(s);
+      myrepo.write('master', filename,
+		    datafile, "Updating data", function(err) {
+		    console.log (err)
+		    });
+    }
+    if(load){
+      myrepo.read('master', filename, function(err, data) {
+      	console.log (err, data);
+      	if(data != null){
+          readData(s, data);
+        }
+      });
+    }
+    initForm(s);
+};
+
+var loadCollections = function(data){
+
+  if(data.clts == undefined){
+    return;
+  }
+  mycollections = data;
+  clts = data.clts;
+  var ncol = clts.length;
+  var contaccordeon = "";
+  for(i=0; i<ncol; i++){
+    contaccordeon = contaccordeon + accordionElement(clts[i].name, clts[i].hotels);
+  }
+  $("#accordion").accordion( "destroy" );
+  $("#accordion").html(contaccordeon);
+  $("#accordion").accordion({collapsible: true, active: false});
+  $("#accordion h3").click(show_marks_collection);
+
+}
+
+var loadProfiles = function(data){
+  if(data.asgt == undefined){
+    return;
+  }
+  asgt = data.asgt;
+  var ncol = asgt.length;
+  for(i=0; i<ncol; i++){
+    var no = asgt[i].no;
+    var accomodation = get_accomodation(no);
+    if(accomodation.assignation == undefined){
+      accomodation.assignation = asgt[i].profiles;
+      myassignations.push(no);
+    }else{
+      var np = asgt[i].profiles.length;
+      for(k=0; k<np; k++){
+        var profile = asgt[i].profiles[k];
+        if(!checkUser(asgt[i].no, profile.id)){
+          accomodation.assignation.push(profile);
+        }
+      }
+    }
+  }
 };
 
 //INCOMPLETE
@@ -208,24 +430,30 @@ function show_accomodation(no){
   var name = accomodation.basicData.name;
   var desc = accomodation.basicData.body;
   var cat = accomodation.extradata.categorias.categoria.item[1]['#text'];
-  var subcat = accomodation.extradata.categorias.categoria
-   .subcategorias.subcategoria.item[1]['#text'];
   var people = loadPeople(accomodation, no);
-
-  var content = '<h2>' + name + '</h2>'
-   + '<p>Type: ' + cat + ', subtype: ' + subcat + '</p>'
-   + desc;
+  var content = '<h2>' + name + '</h2><p>';
+  if(cat != null || cat != undefined){
+    content = content + '<strong>'+ cat + '</strong>';
+  }
+  content = content + loadStars(accomodation);
+  content = content + '</p>';
+  content = content + loadDirection(accomodation.geoData);
+  if(desc != null || desc != undefined){
+    content = content + desc;
+  }
    if(car != null){
-     content = content + car;
+     content = content +'<p class="descriptions">' + car + '</p>';
    }
-   content = content + '<div id="people">';
+   content = content + '<section id="people"> <h3> <span class="label label-success" > PEOPLE ASIGNED </span></h3>';
    content = content + '<form>ID USER<input type="text" id="iduser" />'+
    "<input type='button' value='ADD USER' onclick='loadUser()' /></form>";
    if(people != null){
      content = content + people;
+
    }
-   content = content + '</div>';
-  $('#tabs-infohotel').html(content);
+   content = content + '</section>';
+   initForm("profs");
+  $('#info-hotel').html(content);
   $('.carousel').carousel();
   $( "#tabs" ).tabs( "option", "active", 2);
 };
@@ -237,10 +465,7 @@ function get_accomodations(){
     var list ="";
     list = list + '<ul id="gallery">'
     for (var i = 0; i < accomodations.length; i++) {
-      list = list + '<li no=' + i + '><div class="elem-lista">';
-      list = list + '<img class="mark" no="'+ i +'" src="images/mrojo1.png" onclick="show_mark('+i+')" />';
-      list = list +"<div class='acm' no='"+ i +"' onclick='show_accomodation("+i+")' >" + accomodations[i].basicData.title + "</div>";
-      list = list + '</div></li>';
+      list = list + elementLista(i, accomodations[i].basicData.title, "images/mrojo1.png");
     }
     list = list + '</ul>';
     $('#lista').html(list);
@@ -271,6 +496,26 @@ var contentAccomodation = function(data){
   return true;
 };
 
+var addCollection = function(name, data){
+  var i = 0;
+  var hotels = [];
+  while(true){
+    var val = data[i];
+    if(val == undefined){
+      break;
+    }
+    val = val.attributes[0].value;
+    hotels.push(val);
+    i++;
+  }
+  if(mycollection == undefined){
+    mycollection = {"clts":[{"name":name, "hotels":hotels}]};
+  }else{
+    var col = {"name":name, "hotels":hotels};
+    mycollection.clts.push(col);
+  }
+}
+
 var create_Collection = function(){
   var text = "";
   var empty = false;
@@ -291,9 +536,11 @@ var create_Collection = function(){
       $("#collection ol li .close").remove();
     }
   }
+  addCollection(name, $("#collection ol li"));
   var val = $("#collection ol").html();
   $("#collection ol").html("");
   text = text + val +"</ul></div>";
+
   $("#accordion").accordion( "destroy" );
   $("#accordion").append(text);
   $("#accordion").accordion({collapsible: true, active: false});
@@ -308,50 +555,39 @@ $(document).ready(function() {
   $("#create").click(create_Collection);
   $("#clear").click(delClear);
   $("#accordion").accordion({collapsible: true, active: false});
+  $("#tabs ul li:nth-child(2)").click(function(){initForm("col");});
+  $("#tabs ul li:nth-child(3)").click(function(){initForm("profs");});
 
-  var github
-
-function getToken(){
-  var token = $("#tokenBox").val()
-  $("#tokenBox").hide()
-  $("#repoBox").show()
-  $("#userBox").show()
-
-  github = new Github({
-    token: token,
-    auth: "oauth"
+  //Buttons Github Collections
+  $("#saveclts").click(function(){
+    if(!checkLoadAccomodation("savecol"))
+      return;
+    save = true;
+    showForm("forminitcol", "formtokencol");
   });
-}
-
-function getRepo(){
-  var repodata = $("#repodata")
-  var repo = github.getRepo($("#userBox").val(), $("#repoBox").val());
-  repo.write('master', 'ficherito', 'GITHUB API', 'GITHUB', function(err) {});
-  repo.show(function(err, repo) {
-    if(err){
-      repodata.html("<p>Error: " + err.error + "</p>")
-    }else{
-
-      repodata.html("<p>Repo data:</p>" +
-          "<ul><li>Full name: " + repo.full_name + "</li>" +
-          "<li>Description: " + repo.description + "</li>" +
-          "<li>Created at: " + repo.created_at + "</li>" +
-          "</ul>");
-    }
+  $("#loadclts").click(function(){
+    if(!checkLoadAccomodation())
+      return;
+    load = true;
+    showForm("forminitcol", "formtokencol");
   });
-}
+  $("#gettokencol").click(function(){getToken("formtokencol", "formendcol", "col");})
+  $("#acceptcol").click(function(){getRepo("col");})
 
-$(document).ready(function(){
-
-
-  $("#submitBtn").click(function(){
-    if ($("#tokenBox").is(":visible")){
-      getToken()
-    }else{
-      getRepo()
-    }
-  })
-
-})
+  //Buttons Github Assignation Profiles;
+  $("#saveprofs").click(function(){
+    if(!checkLoadAccomodation("saveprofs"))
+      return;
+    save = true;
+    showForm("forminitprofs", "formtokenprofs");
+  });
+  $("#loadprofs").click(function(){
+    if(!checkLoadAccomodation())
+      return;
+    load = true;
+    showForm("forminitprofs", "formtokenprofs");
+  });
+  $("#gettokenprofs").click(function(){getToken("formtokenprofs", "formendprofs", "profs");})
+  $("#acceptprofs").click(function(){getRepo("profs");})
 
 });

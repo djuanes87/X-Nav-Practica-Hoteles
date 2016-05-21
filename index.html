@@ -2,10 +2,11 @@
 <html>
   <head>
     <title> Hoteles </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="jquery-ui-1.11.4.custom/jquery-ui.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery.min.js"></script>
     <script src="jquery-ui-1.11.4.custom/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
@@ -16,7 +17,11 @@
     <script src="https://apis.google.com/js/client.js?onload=handleClientLoad" ></script>
   </head>
   <body>
-    <div id="yourcollections" class="col-lg-2"> YOUR COLLECTIONS
+    <div class="container-fluid">
+        <img src="images/logo1.jpg" class="img-responsive center-block">
+
+      <div class="row">
+    <div id="yourcollections" class="col-lg-2 "><h3><span class="label label-success" > YOUR COLLECTIONS</span></h3>
     <div class="listas"> <div id="accordion"></div></div>
      </div>
 
@@ -24,37 +29,70 @@
       <ul>
         <li><a href="#tabs-map">Map</a></li>
         <li><a href="#tabs-collections">Collections</a></li>
-        <li><a href="#tabs-infohotel">INFO-HOTEL</a></li>
-        <li><a href="#tabs-asignations">Asignations</a></li>
+        <li><a href="#tabs-infohotel">Hotel Informations</a></li>
       </ul>
       <div id="tabs-map">
       </div>
       <div id="tabs-collections">
         <form id="formcol">
           <input type="text" id="name_collection" class="col-lg-3"/>
-          <input type="button" id="create" value="CREATE" />
-          <input type="button" id="clear" value="CLEAR" />
+          <input type="button" id="create" class="btn btn-success" value="CREATE" />
+          <input type="button" id="clear" class="btn btn-success" value="CLEAR" />
         </form>
         <div id="collection" class="ui-widget-content placeholder">
           <ol>
           </ol>
         </div>
-        <form id="formloadcol">
+        <form id="forminitcol" >
           SAVE OR LOAD YOUR COLLECTIONS
-          <input type="button" id="saveclts" value="SAVE" />
-          <input type="button" id="loadclts" value="LOAD" />
+          <input type="button" class="btn btn-success" id="saveclts" value="SAVE" />
+          <input type="button" class="btn btn-success" id="loadclts" value="LOAD" />
+        </form>
+        <form id="formtokencol" >
+          Token:
+          <input type="text" id="tokencol" />
+          <input type="button" class="btn btn-success" id="gettokencol" value="GET">
+        </form>
+        <form id="formendcol">
+          User:
+          <input type="text" id="usercol" />
+          Repository:
+          <input type="text" id="repocol" />
+          File:
+          <input type="text" id="filecol" />
+          <input type="button" class="btn btn-success" id="acceptcol" value="ACCEPT">
         </form>
       </div>
       <div id="tabs-infohotel">
-        <h1> SELECT SOME ACCOMODATION </h1>
-      </div>
-      <div id="tabs-asignations">
+        <form id="forminitprofs" >
+          SAVE OR LOAD YOUR ASSIGNATIONS
+          <input type="button" class="btn btn-success" id="saveprofs" value="SAVE" />
+          <input type="button" class="btn btn-success" id="loadprofs" value="LOAD" />
+        </form>
+        <form id="formtokenprofs" >
+          Token:
+          <input type="text" id="tokenprofs" />
+          <input type="button" class="btn btn-success" id="gettokenprofs" value="GET">
+        </form>
+        <form id="formendprofs">
+          User:
+          <input type="text" id="userprofs" />
+          Repository:
+          <input type="text" id="repoprofs" />
+          File:
+          <input type="text" id="fileprofs" />
+          <input type="button" class="btn btn-success" id="acceptprofs" value="ACCEPT">
+        </form>
+        <div id="info-hotel"><h1> SELECT SOME ACCOMODATION </h1></div>
       </div>
     </div>
     <div  class="col-lg-2">
-      ACCOMODATIONS
-      <input type="Button" id="loadlist" value="Load Hotel"/>
+      <h3><span class="label label-success" > ACCOMODATIONS</span></h3>
+      <br>
+      <input type="Button" class="btn btn-info" id="loadlist" value="Load Hotel"/>
       <div id="lista" class="listas"></div>
     </div>
+  </div>
+  </div>
   </body>
 </html>
