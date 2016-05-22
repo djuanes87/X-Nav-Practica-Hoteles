@@ -21,3 +21,4 @@ o bien dentro del popup del marcador del mapa esta el boton para desmarcar. <br>
 <br>
 
  <strong> Funcionalidades Optativas <strong><br>
+ +Offline
