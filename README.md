@@ -29,7 +29,7 @@ o bien dentro del popup del marcador del mapa esta el boton para desmarcar. <br>
  +Con el modo offline y el localStorage  la segunda vez que carga al estar en cache y en memoria
  los ficheros, se carga mas rapido la pagina. <br>
 <br>
- <strong>URL Video Funcinalidad Opcional: </strong><a href:"https://youtu.be/pk9PCQ81rSI">https://youtu.be/pk9PCQ81rSI</a><br>
+ <strong>URL Video Funcionalidades Opcionales: </strong><a href:"https://youtu.be/pk9PCQ81rSI">https://youtu.be/pk9PCQ81rSI</a><br>
  <br>
 El video no tiene audio, pero en el se ve como funciona sin conexion y como carga mas rapido al estar en
 memoria los datos que necesita para ejecutar.
