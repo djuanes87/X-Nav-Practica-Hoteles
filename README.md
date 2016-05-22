@@ -20,12 +20,18 @@ o bien dentro del popup del marcador del mapa esta el boton para desmarcar. <br>
 <strong>URL Video Funcionalidad Basica:  </strong><a href="https://youtu.be/4SHnEUy7jI4">https://youtu.be/4SHnEUy7jI4</a><br>
 <br>
 
- <strong> Funcionalidades Optativas <strong><br>
+ <strong> Funcionalidades Optativas </strong><br>
  +Offline <br>
- +LocalStorage - Los hoteles se guarda en la memoria y antes de hacer una peticion del fichero comprueba si
+ +LocalStorage - Se añade el script modernizr para comprobar si el navegador es compatible.
+ Los hoteles se guardan en la memoria y antes de hacer una peticion del fichero comprueba si
  lo tiene en memoria. <br>
  +Open WebApp <br>
  +Con el modo offline y el localStorage  la segunda vez que carga al estar en cache y en memoria
- los ficheros es mas rapido es mas rapido <br>
+ los ficheros, se carga mas rapido la pagina. <br>
 <br>
- <strong>URL Video Funcinalidad Opcional: </strong><a href:"">URL</a>
+ <strong>URL Video Funcinalidad Opcional: </strong><a href:"https://youtu.be/pk9PCQ81rSI">https://youtu.be/pk9PCQ81rSI</a><br>
+ <br>
+El video no tiene audio, pero en el se ve como funciona sin conexion y como carga mas rapido al estar en
+memoria los datos que necesita para ejecutar.
+
+<br>

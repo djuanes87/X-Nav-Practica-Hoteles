@@ -464,13 +464,11 @@ function get_accomodations(){
     if(accomodations != null){
       accomodations = JSON.parse(accomodations);
     }
-    console.log(accomodations);
   }
   if(accomodations == undefined || accomodations == null){
     $.getJSON("json/alojamientos.json", function(data){
       accomodations = data.serviceList.service;
       localStorage.setItem("hotel", JSON.stringify(accomodations));
-      console.log(accomodations);
       show_list();
     });
   }else{
