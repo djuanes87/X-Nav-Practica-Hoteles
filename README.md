@@ -17,4 +17,7 @@ o bien dentro del popup del marcador del mapa esta el boton para desmarcar. <br>
 +Se podra acceder a la informacion del hotel sobre el nombre de los hoteles tanto
  en la lista como en el marcador. <br>
 <br>
+<strong>URL Video Funcionalidad Basica:  </strong><a href="https://youtu.be/4SHnEUy7jI4">https://youtu.be/4SHnEUy7jI4</a><br>
+<br>
+
  <strong> Funcionalidades Optativas <strong><br>
