@@ -468,6 +468,7 @@ function get_accomodations(){
       accomodations = data.serviceList.service;
       localStorage.setItem("hotels", accomodations);
     });
+    console.log(accomodations);
   }
   show_list();
 
