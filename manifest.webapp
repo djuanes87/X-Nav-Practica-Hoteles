@@ -1,0 +1,10 @@
+{
+  "version":"1.0",
+  "name": "MadridHotels",
+  "description": "Practica Hoteles",
+  "launch_path": "/X-Nav-Practica-Hoteles/index.html",
+  "developer": {
+    "name": "Djuanes87",
+    "url": "https://djuanes87.github.io/X-Nav-Practica-Hoteles"
+  }
+}

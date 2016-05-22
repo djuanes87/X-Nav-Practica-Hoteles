@@ -1,0 +1,13 @@
+CACHE MANIFEST
+CACHE:
+js/hoteles.js
+js/jquery.min.js
+js/modernizr.js
+css/style.css
+jquery-ui-1.11.4.custom/*
+json/alojamientos.json
+images/close.png
+images/estrella.gif
+images/logo.png
+images/mrojo1.png
+images/mverde1.png
