@@ -442,7 +442,7 @@ function show_accomodation(no){
   $( "#tabs" ).tabs( "option", "active", 2);
 };
 
-function show_list = function(){
+var show_list = function(){
   var list ="";
   list = list + '<ul id="gallery">'
   for (var i = 0; i < accomodations.length; i++) {
@@ -455,7 +455,7 @@ function show_list = function(){
     appendTo: "body",
     helper: "clone"
   });
-}
+};
 
 function get_accomodations(){
   $("#loadlist").hide();
