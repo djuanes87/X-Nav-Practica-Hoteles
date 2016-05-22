@@ -22,5 +22,10 @@ o bien dentro del popup del marcador del mapa esta el boton para desmarcar. <br>
 
  <strong> Funcionalidades Optativas <strong><br>
  +Offline <br>
+ +LocalStorage - Los hoteles se guarda en la memoria y antes de hacer una peticion del fichero comprueba si
+ lo tiene en memoria. <br>
  +Open WebApp <br>
- +Con el modo offline, la segunda vez que carga al estar en cache es mas rapido <br>
+ +Con el modo offline y el localStorage  la segunda vez que carga al estar en cache y en memoria
+ los ficheros es mas rapido es mas rapido <br>
+<br>
+ <strong>URL Video Funcinalidad Opcional: </strong><a href:"">URL</a>

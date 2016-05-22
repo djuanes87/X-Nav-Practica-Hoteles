@@ -460,17 +460,22 @@ var show_list = function(){
 function get_accomodations(){
   $("#loadlist").hide();
   if (Modernizr.localstorage) {
-    accomodations = localStorage.getItem("hotels");
+    accomodations = localStorage.getItem("hotel");
+    if(accomodations != null){
+      accomodations = JSON.parse(accomodations);
+    }
     console.log(accomodations);
   }
   if(accomodations == undefined || accomodations == null){
     $.getJSON("json/alojamientos.json", function(data){
       accomodations = data.serviceList.service;
-      localStorage.setItem("hotels", accomodations);
+      localStorage.setItem("hotel", JSON.stringify(accomodations));
+      console.log(accomodations);
+      show_list();
     });
-    console.log(accomodations);
+  }else{
+    show_list();
   }
-  show_list();
 
 };
 
