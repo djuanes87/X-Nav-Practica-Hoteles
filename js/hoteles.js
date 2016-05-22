@@ -89,10 +89,7 @@ var delProfile = function(no, iduser){
   for(i=0; i<nelem; i++){
     if(assignation[i].id == iduser){
       var tag = "#" + assignation[i].id;
-      console.log("ELIMINA");
       assignation.splice(i,1);
-      console.log(tag);
-      console.log(iduser);
       $(tag).remove();
       break;
     }
@@ -111,12 +108,10 @@ var saveUser = function(resp, no){
     var user = {'id':resp.id, 'name':resp.displayName,'img':resp.image.url};
     assignation.push(user);
   }
-  console.log(resp.id);
   accomodation.assignation = assignation;
   var content = '<div class="prof" id="'+ resp.id+'" ><h3>'+
   '<img class="delprof" src="images/close.png" onclick="delProfile('+no+', '+ resp.id+')" />'+
   '<img class="imgprof" src="'+resp.image.url+'" />'+resp.displayName+'</h3></div>';
-  console.log(myassignations);
   return content;
 }
 
@@ -187,7 +182,6 @@ var reponame;
 var filename;
 
 var initForm = function(f){
-  console.log(f);
   save = false;
   load = false;
   user = "";
@@ -220,11 +214,9 @@ var getToken = function (v, h, f) {
       token = $("#tokenprofs").val();
       $("#tokenprofs").val("");
     }
-    console.log (token);
     if(token.length < 40){
       return;
     }
-    console.log (token);
     github = new Github({
         token: token,
 	      auth: "oauth"
@@ -281,12 +273,10 @@ function getRepo(s) {
       var datafile = getFileSave(s);
       myrepo.write('master', filename,
 		    datafile, "Updating data", function(err) {
-		    console.log (err)
 		    });
     }
     if(load){
       myrepo.read('master', filename, function(err, data) {
-      	console.log (err, data);
       	if(data != null){
           readData(s, data);
         }
@@ -338,12 +328,6 @@ var loadProfiles = function(data){
   }
 };
 
-//INCOMPLETE
-var show_marks_collection = function(){
-  var name = $(this).attr("name");
-  //  $("#accordion h3[name="'+name+'"] > div").
-  //console.log(name);
-};
 
 var loadCarousel = function(multimedia){
   if(multimedia == null){
@@ -458,23 +442,35 @@ function show_accomodation(no){
   $( "#tabs" ).tabs( "option", "active", 2);
 };
 
+function show_list = function(){
+  var list ="";
+  list = list + '<ul id="gallery">'
+  for (var i = 0; i < accomodations.length; i++) {
+    list = list + elementLista(i, accomodations[i].basicData.title, "images/mrojo1.png");
+  }
+  list = list + '</ul>';
+  $('#lista').html(list);
+
+  $( "#lista li" ).draggable({
+    appendTo: "body",
+    helper: "clone"
+  });
+}
+
 function get_accomodations(){
   $("#loadlist").hide();
-  $.getJSON("json/alojamientos.json", function(data){
-    accomodations = data.serviceList.service;
-    var list ="";
-    list = list + '<ul id="gallery">'
-    for (var i = 0; i < accomodations.length; i++) {
-      list = list + elementLista(i, accomodations[i].basicData.title, "images/mrojo1.png");
-    }
-    list = list + '</ul>';
-    $('#lista').html(list);
-
-    $( "#lista li" ).draggable({
-      appendTo: "body",
-      helper: "clone"
+  if (Modernizr.localstorage) {
+    accomodations = localStorage.getItem("hotels");
+    console.log(accomodations);
+  }
+  if(accomodations == undefined || accomodations == null){
+    $.getJSON("json/alojamientos.json", function(data){
+      accomodations = data.serviceList.service;
+      localStorage.setItem("hotels", accomodations);
     });
-  });
+  }
+  show_list();
+
 };
 
 var delSelect = function(no){

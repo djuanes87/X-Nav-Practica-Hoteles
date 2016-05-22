@@ -21,4 +21,6 @@ o bien dentro del popup del marcador del mapa esta el boton para desmarcar. <br>
 <br>
 
  <strong> Funcionalidades Optativas <strong><br>
- +Offline
+ +Offline <br>
+ +Open WebApp <br>
+ +Con el modo offline, la segunda vez que carga al estar en cache es mas rapido <br>
